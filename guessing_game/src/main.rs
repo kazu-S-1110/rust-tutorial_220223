@@ -1,4 +1,5 @@
 use rand::Rng;
+use std::cmp::Ordering;
 use std::io;
 
 fn main() {
@@ -22,12 +23,18 @@ fn main() {
         .read_line(&mut guess)
         .expect("Failed to read line");
     // 仮に、プログラムの冒頭でuse std::ioとしていなければ、この関数呼び出しは、std::io::stdinと記述していたでしょう。
+    let guess: u32 = guess.trim().parse().expect("Please type a number!");
 
     println!("You guessed: {}", guess);
 
     /* 別の例(PythonのFormatに似てる)
     let x = 5;
     let y = 10;
-
     println!("x = {} and y = {}", x, y); */
+
+    match guess.cmp(&secret_number) {
+        Ordering::Less => println!("Too small!"),
+        Ordering::Greater => println!("Too big!"),
+        Ordering::Equal => println!("You win!"),
+    }
 }
