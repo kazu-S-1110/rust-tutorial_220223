@@ -26,4 +26,20 @@ fn main() {
     // 配列型　タプルと異なり、配列の全要素は、 同じ型でなければなりません
     let a = [1, 2, 3, 4, 5];
     let first = a[2]; //3
+
+    another_function(54, 65);
+
+    let num = five(43);
+    println!("The value of num is : {}", num)
+}
+
+// 関数
+fn another_function(x: i32, y: i32) {
+    println!("The value of x is {}", x);
+    println!("The value of y is {}", y);
+}
+
+fn five(num: i32) -> i32 {
+    num * 4 //returnいらない
+            // 末にセミコロンとつけるとエラー。i32型を返すと言っているのに、文は値に評価されないから
 }
