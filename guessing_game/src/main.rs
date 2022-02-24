@@ -10,31 +10,36 @@ fn main() {
 
     println!("The secret number is : {}", secret_number);
 
-    println!("Please input your guess.");
+    loop {
+        println!("Please input your guess.");
 
-    let mut guess = String::new();
+        let mut guess = String::new();
 
-    //let foo = 5; // immutable
-    //let mut bar = 5; // mutable
+        //let foo = 5; // immutable
+        //let mut bar = 5; // mutable
 
-    // ::new行にある::という記法は、newがString型の関連関数であることを表しています。 関連関数とは、String型の特定のオブジェクトよりも型(この場合はString)に対して 実装された関数のことであり、静的(スタティック)メソッドと呼ばれる言語もあります。
+        // ::new行にある::という記法は、newがString型の関連関数であることを表しています。 関連関数とは、String型の特定のオブジェクトよりも型(この場合はString)に対して 実装された関数のことであり、静的(スタティック)メソッドと呼ばれる言語もあります。
 
-    io::stdin()
-        .read_line(&mut guess)
-        .expect("Failed to read line");
-    // 仮に、プログラムの冒頭でuse std::ioとしていなければ、この関数呼び出しは、std::io::stdinと記述していたでしょう。
-    let guess: u32 = guess.trim().parse().expect("Please type a number!");
+        io::stdin()
+            .read_line(&mut guess)
+            .expect("Failed to read line");
+        // 仮に、プログラムの冒頭でuse std::ioとしていなければ、この関数呼び出しは、std::io::stdinと記述していたでしょう。
+        let guess: u32 = guess.trim().parse().expect("Please type a number!");
 
-    println!("You guessed: {}", guess);
+        println!("You guessed: {}", guess);
 
-    /* 別の例(PythonのFormatに似てる)
-    let x = 5;
-    let y = 10;
-    println!("x = {} and y = {}", x, y); */
+        /* 別の例(PythonのFormatに似てる)
+        let x = 5;
+        let y = 10;
+        println!("x = {} and y = {}", x, y); */
 
-    match guess.cmp(&secret_number) {
-        Ordering::Less => println!("Too small!"),
-        Ordering::Greater => println!("Too big!"),
-        Ordering::Equal => println!("You win!"),
+        match guess.cmp(&secret_number) {
+            Ordering::Less => println!("Too small!"),
+            Ordering::Greater => println!("Too big!"),
+            Ordering::Equal => {
+                println!("You win!");
+                break;
+            }
+        }
     }
 }
