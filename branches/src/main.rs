@@ -15,4 +15,25 @@ fn main() {
 
     // numberの値は、{}です
     println!("The value of number is: {}", number);
+
+    let mut num = 23;
+    while num != 0 {
+        println!("{}", num);
+        num = num - 1;
+    }
+
+    println!("LIFTOFF!!!!");
+
+    // 最も安全なforでコレクションを覗き見る方法
+    let a = [10, 20, 30, 40, 50];
+
+    for element in a.iter() {
+        // 値は{}です
+        println!("the value is: {}", element);
+    }
+    // 逆順なら
+    for number in (1..4).rev() {
+        println!("{}!", number);
+    }
+    println!("LIFTOFF!!!");
 }
