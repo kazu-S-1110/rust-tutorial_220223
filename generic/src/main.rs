@@ -1,33 +1,72 @@
-#![allow(dead_code)] // この行でコンパイラのwaringsメッセージを止めます。
+#![allow(dead_code)] // この行でコンパイラのwarningsメッセージを止めます。
 struct Location(i32, i32);
+
+enum PoisonType {
+    Acidic,
+    Painful,
+    Lethal,
+}
+enum Size {
+    Big,
+    Small,
+}
+enum Weapon {
+    Claw(i32, Size),
+    Poison(PoisonType),
+    None,
+}
 fn main() {
-    // スタティックメソッド - ある型そのものに紐付き、演算子 :: で呼び出せます。
-    // インスタンスメソッド - ある型のインスタンスに紐付き、演算子 . で呼び出せます。
-
-    // スタティックメソッドでStringインスタンスを作成する。
-    let s = String::from("Hello world!");
-
-    // インスタンスを使ってメソッド呼び出す。
-    println!("{} is {} characters long.", s, s.len());
-
     // 構造体のインスタンス化
-    let ferris = Creature {
+    let rust_crab = Creature {
         species: Species::Crab,
         name: String::from("RustCrab"),
         arms: 2,
         legs: 4,
         birth: String::from("today"),
+        weapon: Weapon::Claw(2, Size::Small),
     };
-    println!(
-        "This is a {}. They have {} arms, {} legs, and birthday is {}",
-        ferris.name, ferris.arms, ferris.legs, ferris.birth
-    );
+    let ferris = Creature {
+        species: Species::Crab,
+        name: String::from("ferris"),
+        arms: 2,
+        legs: 4,
+        birth: String::from("1 year ago"),
+        weapon: Weapon::Poison(PoisonType::Lethal),
+    };
 
     match ferris.species {
-        Species::Crab => println!("{} is a crab", ferris.name),
-        Species::Octopus => println!("{} is a octopus", ferris.name),
-        Species::Fish => println!("{} is a fish", ferris.name),
-        Species::Clam => println!("{} is a clam", ferris.name),
+        Species::Crab => match ferris.weapon {
+            Weapon::Claw(num_claws, ref size) => {
+                //参照にしないとあかんってエラーが出た。
+                let size_description = match size {
+                    Size::Big => "big",
+                    Size::Small => "small",
+                };
+                println!(
+                    "ferris is a crab with {} {} claws",
+                    num_claws, size_description
+                )
+            }
+            _ => println!("ferris is a crab with some other weapon"),
+        },
+        _ => println!("ferris is some other animal"),
+    }
+
+    match rust_crab.species {
+        Species::Crab => match ferris.weapon {
+            Weapon::Claw(num_claws, size) => {
+                let size_description = match size {
+                    Size::Big => "big",
+                    Size::Small => "small",
+                };
+                println!(
+                    "ferris is a crab with {} {} claws",
+                    num_claws, size_description
+                )
+            }
+            _ => println!("ferris is a crab with some other weapon"),
+        },
+        _ => println!("ferris is some other animal"),
     }
 
     // タプルライクな構造体
@@ -43,6 +82,7 @@ struct Creature {
     arms: i32,
     legs: i32,
     birth: String,
+    weapon: Weapon,
 }
 
 enum Species {
