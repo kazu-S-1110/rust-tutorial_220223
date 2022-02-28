@@ -1,7 +1,10 @@
-// Rustには Result と呼ばれるジェネリックな列挙型が組み込まれており、失敗する可能性のある値を返せます。 これは言語がエラーを処理する際の慣用的な方法です。
-// enum Result<T, E> {
-//     Ok(T),
-//     Err(E),
+// Result はとてもよく使うので、Rust にはそれを扱うための強力な演算子 ? が用意されています。 以下の2つのコードは等価です。
+
+// do_something_that_might_fail()?
+
+// match do_something_that_might_fail() {
+//     Ok(v) => v,
+//     Err(e) => return Err(e),
 // }
 
 fn do_something(i: i32) -> Result<String, String> {
@@ -12,11 +15,15 @@ fn do_something(i: i32) -> Result<String, String> {
     }
 }
 
-fn main() {
-    let result = do_something(43);
+fn main() -> Result<(), String> {
+    // let result = do_something(43);
 
-    match result {
-        Ok(v) => println!("Right! {}", v),
-        Err(e) => println!("Error: {}", e),
-    }
+    // match result {
+    //     Ok(v) => println!("Right! {}", v),
+    //     Err(e) => println!("Error: {}", e),
+    // }
+
+    let v = do_something(43)?;
+    println!("{}", v);
+    Ok(())
 }
