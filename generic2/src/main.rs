@@ -1,50 +1,22 @@
-// Rustには Option と呼ばれるジェネリックな列挙型が組み込まれており、null を使わずに null 許容な値を表現できます。
-// enum Option<T> {
-//     None,
-//     Some(T),
+// Rustには Result と呼ばれるジェネリックな列挙型が組み込まれており、失敗する可能性のある値を返せます。 これは言語がエラーを処理する際の慣用的な方法です。
+// enum Result<T, E> {
+//     Ok(T),
+//     Err(E),
 // }
 
-// 部分的に定義された構造体型
-struct BagOfHolding<T> {
-    // パラメータ T を渡すことが可能
-    item: Option<T>,
-}
-
-struct BagInSome<T> {
-    item: Option<T>,
+fn do_something(i: i32) -> Result<String, String> {
+    if i == 43 {
+        Ok(String::from("しっかり43の値が入ってます！"))
+    } else {
+        Err(String::from("正しい値じゃないよ"))
+    }
 }
 
 fn main() {
-    // 注意: i32 が入るバッグに、何も入っていません！
-    // None からは型が決められないため、型を指定する必要があります。
-    let i32_bag = BagOfHolding::<i32> { item: None };
+    let result = do_something(43);
 
-    if i32_bag.item.is_none() {
-        println!("バッグには何もない！")
-    } else {
-        println!("バッグには何かある！")
-    }
-
-    let i32_bag = BagOfHolding::<i32> { item: Some(42) };
-
-    if i32_bag.item.is_some() {
-        println!("バッグには何かある！")
-    } else {
-        println!("バッグには何もない！")
-    }
-
-    // match は Option をエレガントに分解して、
-    // すべてのケースが処理されることを保証できます！
-    match i32_bag.item {
-        Some(v) => println!("バッグに {} を発見！", v),
-        None => println!("何も見付からなかった"),
-    }
-
-    // 実際に書いてみた。
-    let string_bag = BagInSome::<String> { item: None };
-    if string_bag.item.is_none() {
-        println!("何もないよ！！")
-    } else {
-        println!("何かあるよ")
+    match result {
+        Ok(v) => println!("Right! {}", v),
+        Err(e) => println!("Error: {}", e),
     }
 }
